@@ -1,26 +1,52 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import axios from 'axios'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { connect } from 'react-redux'
+import { addWeather, getWeather } from 'actions/actionCreator'
+
+import HomePage from 'page/HomePage'
+import AboutPage from 'page/AboutPage'
+import ErrorPage from 'page/ErrorPage'
+import './App.css'
+
+class App extends React.Component {
+  state = {
+    key: '7e96f0c53dbb9c94d563be927a5102e7',
+  }
+  componentDidMount() {
+    if (localStorage.getItem('city')) {
+      this.getWeatherCities()
+    }
+  }
+  getWeatherCities = () => {
+    axios
+      .get(
+        `http://api.openweathermap.org/data/2.5/group?id=${localStorage.getItem(
+          'city'
+        )}&units=metric&appid=${this.state.key}`
+      )
+      .then((res) => {
+        this.props.getWeather(res.data.list)
+      })
+  }
+  render() {
+    return (
+      <BrowserRouter>
+        <Switch>
+          <Route path="/" exact component={HomePage} />
+          <Route path="/404" exact component={ErrorPage} />
+          <Route path="/:id" exact component={AboutPage} />
+          <Route component={ErrorPage} />
+        </Switch>
+      </BrowserRouter>
+    )
+  }
 }
 
-export default App;
+export default connect(
+  (state) => ({
+    weather: state.weather,
+  }),
+  { addWeather, getWeather }
+)(App)
