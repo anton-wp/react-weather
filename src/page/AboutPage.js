@@ -34,7 +34,7 @@ class AboutPage extends React.Component {
     return (
       <div className="about-page">
         <Link className="button-back" to="/">
-          <i class="arrow left"></i> Home
+          <i className="arrow left"></i> Home
         </Link>
         <h1>About weather in {this.weather.name}</h1>
         <img
