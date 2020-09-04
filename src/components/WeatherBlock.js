@@ -12,6 +12,7 @@ class WeatherBlock extends React.Component {
     )
     this.props.delWeather(this.props.city.id)
   }
+
   render() {
     let weather = this.props.city
     return (

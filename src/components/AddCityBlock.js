@@ -2,12 +2,10 @@ import React from 'react'
 import Select from 'react-select'
 import { connect } from 'react-redux'
 import { updateCity } from 'actions/actionCreator'
-import { addWeather } from 'actions/actionCreator'
-import axios from 'axios'
+import { getWeatherBlock } from 'actions/actionCreator'
 
 class AddCityBlock extends React.Component {
   state = {
-    key: '7e96f0c53dbb9c94d563be927a5102e7',
     selectedOption: {},
   }
   handleChange = (selectedOption) => {
@@ -15,13 +13,7 @@ class AddCityBlock extends React.Component {
   }
 
   getWeatherCity = (id) => {
-    axios
-      .get(
-        `http://api.openweathermap.org/data/2.5/weather?id=${id}&appid=${this.state.key}`
-      )
-      .then((res) => {
-        this.props.addWeather(res.data)
-      })
+    this.props.getWeatherBlock(id)
   }
   addCity = () => {
     if (!this.props.weather.id.includes(this.state.selectedOption.id)) {
@@ -63,5 +55,5 @@ export default connect(
     city: state.city,
     weather: state.weather,
   }),
-  { updateCity, addWeather }
+  { updateCity, getWeatherBlock }
 )(AddCityBlock)
