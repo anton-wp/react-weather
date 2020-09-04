@@ -22,7 +22,6 @@ class AddCityBlock extends React.Component {
 
       let newCity = [
         ...this.props.weather.id,
-        
         ...[this.state.selectedOption.id],
       ]
       localStorage.setItem('city', newCity)
